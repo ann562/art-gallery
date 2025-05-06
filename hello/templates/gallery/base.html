@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Art Gallery{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #95a5a6;
+            --accent: #e67e22;
+            --light: #f5f5f5;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #d35400;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 20px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        /* Custom Star Rating */
+        .star-rating {
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        
+        .rating-input {
+            display: flex;
+            margin: 10px 0;
+        }
+        
+        .rating-input div {
+            margin-right: 15px;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Art Gallery</div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'art_piece_list' %}">Gallery</a></li>
+                    {% if user.is_staff %}
+                    <li><a href="{% url 'feedback_report' %}">Feedback Report</a></li>
+                    <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; {% now "Y" %} Art Gallery. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

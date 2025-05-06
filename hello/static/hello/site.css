@@ -1,0 +1,103 @@
+.message {
+    font-weight: 600;
+    color: blue;
+}
+
+.navbar {
+    background-color: blue;
+    color: white;
+    padding: 8px 5px;
+    font-size: 1em;
+    font-family: 'Trebuchet MS', sans-serif;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+    margin-right: 20px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.navbar-brand {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.navbar-item {
+    font-variant: small-caps;
+    margin-left: 30px;
+}
+
+.body-content {
+    padding: 10px;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 60px; /* prevent content from hiding behind nav */
+}
+
+/* NEW: Art detail layout and image styling */
+.art-image {
+    width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+}
+
+.art-detail {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.art-detail h2 {
+    font-size: 2em;
+    margin-bottom: 5px;
+}
+
+.art-detail p {
+    margin: 4px 0;
+    font-size: 1em;
+    color: #333;
+}
+
+/* Feedback form styling */
+.feedback-section {
+    margin-top: 40px;
+}
+
+.feedback-section h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.feedback-section form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Feedback list styling */
+.feedback-list {
+    margin-top: 30px;
+}
+
+.feedback-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.feedback-item:last-child {
+    border-bottom: none;
+}

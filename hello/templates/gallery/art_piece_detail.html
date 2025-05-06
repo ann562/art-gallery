@@ -1,0 +1,276 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+
+{% block title %}{{ art_piece.title }} - Art Gallery{% endblock %}
+
+{% block extra_css %}
+<style>
+    .art-detail {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    @media (min-width: 768px) {
+        .art-detail {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    .art-image-container {
+        position: relative;
+    }
+    
+    .art-image {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .art-info {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .art-title {
+        font-size: 2rem;
+        margin-bottom: 5px;
+    }
+    
+    .art-artist {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+    .art-meta {
+        margin-bottom: 20px;
+    }
+    
+    .art-meta dl {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        row-gap: 10px;
+    }
+    
+    .art-meta dt {
+        font-weight: 500;
+        color: #666;
+    }
+    
+    .art-description {
+        margin: 20px 0;
+        line-height: 1.8;
+    }
+    
+    .feedback-section {
+        margin-top: 40px;
+    }
+    
+    .feedback-form {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+    
+    .feedback-form h3 {
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: inherit;
+    }
+    
+    .feedback-list {
+        margin-top: 30px;
+    }
+    
+    .feedback-item {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+    
+    .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .feedback-name {
+        font-weight: 500;
+    }
+    
+    .feedback-date {
+        color: #888;
+        font-size: 0.9rem;
+    }
+    
+    .feedback-comment {
+        margin-top: 10px;
+        line-height: 1.6;
+    }
+    
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 20px;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .back-link i {
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'art_piece_list' %}" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Gallery
+</a>
+
+<div class="art-detail">
+    <div class="art-image-container">
+       <img src="{{ art_piece.image.url }}" alt="{{ art_piece.title }}" class="art-image">
+    </div>
+    
+    <div class="art-info">
+        <h1 class="art-title">{{ art_piece.title }}</h1>
+        <p class="art-artist">by {{ art_piece.artist }}</p>
+        
+        <div class="star-rating">
+            {% for i in "12345" %}
+                {% if forloop.counter <= art_piece.average_rating %}
+                    <i class="fas fa-star"></i>
+                {% elif forloop.counter <= art_piece.average_rating|add:0.5 %}
+                    <i class="fas fa-star-half-alt"></i>
+                {% else %}
+                    <i class="far fa-star"></i>
+                {% endif %}
+            {% endfor %}
+            <span>({{ art_piece.total_ratings }} ratings)</span>
+        </div>
+        
+        <div class="art-meta">
+            <dl>
+                <dt>Medium:</dt>
+                <dd>{{ art_piece.medium }}</dd>
+                
+                {% if art_piece.year_created %}
+                <dt>Year:</dt>
+                <dd>{{ art_piece.year_created }}</dd>
+                {% endif %}
+                
+                {% if art_piece.price %}
+                <dt>Price:</dt>
+                <dd>${{ art_piece.price }}</dd>
+                {% endif %}
+            </dl>
+        </div>
+        
+        <div class="art-description">
+            {{ art_piece.description }}
+        </div>
+    </div>
+</div>
+
+<div class="feedback-section">
+    <h2>Share Your Thoughts</h2>
+    
+    <div class="feedback-form">
+        <h3>Rate this artwork</h3>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                {% if form.name.errors %}
+                <div class="error">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="error">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.rating.label_tag }}
+                <div class="rating-options">
+                    {{ form.rating }}
+                </div>
+                {% if form.rating.errors %}
+                <div class="error">{{ form.rating.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.comment.label_tag }}
+                {{ form.comment }}
+                {% if form.comment.errors %}
+                <div class="error">{{ form.comment.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn">Submit Feedback</button>
+        </form>
+    </div>
+    
+    <div class="feedback-list">
+        <h3>Reviews ({{ feedback_list.count }})</h3>
+        
+        {% if feedback_list %}
+            {% for feedback in feedback_list %}
+            <div class="feedback-item">
+                <div class="feedback-header">
+                    <div class="feedback-name">{{ feedback.name }}</div>
+                    <div class="feedback-date">{{ feedback.created_at|date:"F j, Y" }}</div>
+                </div>
+                
+                <div class="star-rating">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= feedback.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div class="feedback-comment">
+                    {{ feedback.comment }}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews yet. Be the first to share your thoughts!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

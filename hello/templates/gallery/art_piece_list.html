@@ -1,0 +1,108 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+
+{% block title %}Browse Artworks - Art Gallery{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+    }
+    
+    .art-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .art-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .art-image {
+        height: 220px;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .art-info {
+        padding: 20px;
+    }
+    
+    .art-title {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+    
+    .art-artist {
+        color: #666;
+        margin-bottom: 10px;
+    }
+    
+    .art-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+    }
+    
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Browse Our Art Collection</h1>
+</div>
+
+{% if art_pieces %}
+<div class="gallery">
+    {% for art in art_pieces %}
+    <a href="{% url 'art_piece_detail' art.pk %}" class="art-card">
+        <img src="{{ art.image.url }}" alt="{{ art.title }}" class="art-image">
+        <div class="art-info">
+            <h2 class="art-title">{{ art.title }}</h2>
+            <p class="art-artist">{{ art.artist }}</p>
+            
+            <div class="star-rating">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= art.average_rating %}
+                        <i class="fas fa-star"></i>
+                    {% elif forloop.counter <= art.average_rating|add:0.5 %}
+                        <i class="fas fa-star-half-alt"></i>
+                    {% else %}
+                        <i class="far fa-star"></i>
+                    {% endif %}
+                {% endfor %}
+                <span>({{ art.total_ratings }})</span>
+            </div>
+            
+            <div class="art-meta">
+                <span>{{ art.medium }}</span>
+                {% if art.price %}
+                <span>${{ art.price }}</span>
+                {% else %}
+                <span>Price upon request</span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No artworks have been added to the gallery yet.</p>
+</div>
+{% endif %}
+{% endblock %}

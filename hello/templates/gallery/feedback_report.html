@@ -1,0 +1,85 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+
+{% block title %}Feedback Report - Art Gallery{% endblock %}
+
+{% block extra_css %}
+<style>
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    
+    .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .report-table th, 
+    .report-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .report-table th {
+        background-color: var(--dark);
+        color: white;
+        font-weight: 500;
+    }
+    
+    .report-table tr:hover {
+        background-color: #f9f9f9;
+    }
+    
+    .report-table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .art-thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    
+    .no-data {
+        text-align: center;
+        padding: 40px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feedback-detail {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .feedback-detail h3 {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+    
+    .feedback-items {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .feedback-item {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+    }
+</style>
+{% endblock %}
